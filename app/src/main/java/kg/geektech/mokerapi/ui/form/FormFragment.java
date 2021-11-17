@@ -28,7 +28,7 @@ public class FormFragment extends Fragment {
     private FragmentFormBinding binding;
     private NavController navController;
     private Post post;
-    private boolean isUpdate = false;
+    private boolean trueUpdate = false;
 
     public FormFragment() {
     }
@@ -43,14 +43,15 @@ public class FormFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        
+
         if (getArguments() != null){
         post = (Post) requireArguments().getSerializable("key");
-            isUpdate = getArguments().getBoolean("isUpdate");
+            trueUpdate = true;
             setPosts();
         }
+
         binding.btnCreatePost.setOnClickListener(v -> {
-            if (!isUpdate){
+            if (!trueUpdate){
                 createPost();
             }else {
                 updatePost();
@@ -58,7 +59,7 @@ public class FormFragment extends Fragment {
         });
     }
     private void setPosts() {
-        binding.etUserId.setText(String.valueOf(post.getId()));
+        binding.etUserId.setText(String.valueOf(post.getUser()));
         binding.etDescription.setText(post.getContent());
         binding.etTitle.setText(post.getTitle());
     }

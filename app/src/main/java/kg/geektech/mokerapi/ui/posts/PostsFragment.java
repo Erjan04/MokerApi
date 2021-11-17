@@ -44,17 +44,17 @@ public class PostsFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 Post post = adapter.getItem(position);
                 bundle.putSerializable("key",post);
-                bundle.putBoolean("isUpdate",true);
                 NavController navController = Navigation.findNavController(requireActivity(),R.id.nav_host_fragment);
                 navController.navigate(R.id.action_postsFragment_to_formFragment,bundle);
             }
             @Override
             public void onLongClick(int position) {
                 AlertDialog.Builder alert = new AlertDialog.Builder(requireContext());
-                alert.setTitle("Attention !!").setMessage("delete item ?").setPositiveButton("yes", (dialog, which) -> App.api.deletePost(adapter.getItem(position).getId()).enqueue(new Callback<Post>() {
+                alert.setTitle("Attention !!").setMessage("delete item ?").setPositiveButton("yes", (dialog, which)
+                        -> App.api.deletePost(adapter.getItem(position).getId()).enqueue(new Callback<Post>() {
                     @Override
                     public void onResponse(@NotNull Call<Post> call, @NotNull Response<Post> response) {
-                        if (response.isSuccessful() && response.body() !=null){
+                        if (response.isSuccessful()){
                             adapter.removeItem(position);
                         }
                     }

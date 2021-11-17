@@ -30,8 +30,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
     public void removeItem(int position){
-        this.list.remove(position);
-        notifyDataSetChanged();
+        list.remove(position);
+        notifyItemRemoved(position);
     }
     public Post getItem(int position){
         return list.get(position);
@@ -64,7 +64,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             binding.tvTitle.setText(post.getTitle());
             binding.tvDescription.setText(post.getContent());
             binding.tvUserID.setText(String.valueOf(post.getUser()));
-            itemView.setOnClickListener(v -> onClick.onItemClick(getAdapterPosition()));
+            binding.btnUpgrade.setOnClickListener(v -> onClick.onItemClick(getAdapterPosition()));
             itemView.setOnLongClickListener(v -> {
                 onClick.onLongClick(getAdapterPosition());
                 return true;
