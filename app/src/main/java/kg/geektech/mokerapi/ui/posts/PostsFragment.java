@@ -50,11 +50,10 @@ public class PostsFragment extends Fragment {
             @Override
             public void onLongClick(int position) {
                 AlertDialog.Builder alert = new AlertDialog.Builder(requireContext());
-                alert.setTitle("Attention !!").setMessage("delete item ?").setPositiveButton("yes", (dialog, which)
-                        -> App.api.deletePost(adapter.getItem(position).getId()).enqueue(new Callback<Post>() {
+                alert.setTitle("Attention !!").setMessage("delete item ?").setPositiveButton("yes", (dialog, which) -> App.api.deletePost(adapter.getItem(position).getId()).enqueue(new Callback<Post>() {
                     @Override
                     public void onResponse(@NotNull Call<Post> call, @NotNull Response<Post> response) {
-                        if (response.isSuccessful()){
+                        if (response.isSuccessful() && response.body() !=null){
                             adapter.removeItem(position);
                         }
                     }

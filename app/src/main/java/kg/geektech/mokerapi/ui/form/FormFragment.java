@@ -75,7 +75,7 @@ public class FormFragment extends Fragment {
             @Override
             public void onResponse(@NotNull Call<Post> call, @NotNull Response<Post> response) {
                 if (response.isSuccessful()){
-                    navController.popBackStack();
+                    navController.navigateUp();
                 }
             }
             @Override
@@ -89,7 +89,7 @@ public class FormFragment extends Fragment {
             @Override
             public void onResponse(@NotNull Call<Post> call, @NotNull Response<Post> response) {
                 if (response.isSuccessful()){
-                    navController.popBackStack();
+                    navController.navigateUp();
                 }
             }
 
