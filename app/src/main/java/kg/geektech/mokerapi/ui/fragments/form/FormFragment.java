@@ -1,47 +1,26 @@
-package kg.geektech.mokerapi.ui.form;
+package kg.geektech.mokerapi.ui.fragments.form;
 
-import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import org.jetbrains.annotations.NotNull;
 
 import kg.geektech.mokerapi.App;
-import kg.geektech.mokerapi.R;
+import kg.geektech.mokerapi.base.BaseFragment;
 import kg.geektech.mokerapi.data.models.Post;
 import kg.geektech.mokerapi.databinding.FragmentFormBinding;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FormFragment extends Fragment {
+public class FormFragment extends BaseFragment<FragmentFormBinding> {
 
-    private FragmentFormBinding binding;
-    private NavController navController;
-
-    public FormFragment() {
+    @Override
+    protected FragmentFormBinding bind() {
+        return FragmentFormBinding.inflate(getLayoutInflater());
     }
 
     @Override
-    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        binding = FragmentFormBinding.inflate(getLayoutInflater(), container, false);
-        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-        return binding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
+    protected void setupLogic() {
         if (getArguments() != null) {
             Post post = (Post) requireArguments().getSerializable("key");
             binding.etUserId.setText(String.valueOf(post.getUser()));
@@ -49,23 +28,31 @@ public class FormFragment extends Fragment {
             binding.etTitle.setText(post.getTitle());
         }
         binding.btnCreatePost.setOnClickListener(view1 -> {
+            String title = binding.etTitle.getText().toString().trim();
+            String content = binding.etDescription.getText().toString().trim();
+
             if (getArguments() != null) {
-                updatePost();
+                Post post = (Post) requireArguments().getSerializable("key");
+                post.setTitle(title);
+                post.setContent(content);
+                updatePost(post);
             } else {
-                createPost();
+                Post post = new Post(
+                        binding.etTitle.getText().toString(),
+                        binding.etDescription.getText().toString(),
+                        Integer.parseInt(binding.etUserId.getText().toString()), 35);
+                createPost(post);
             }
         });
     }
-    private Post getInformation(){
-        Post post = new Post(
-                binding.etTitle.getText().toString(),
-                binding.etDescription.getText().toString(),
-                Integer.parseInt(binding.etUserId.getText().toString()),35);
-        return post;
+
+    @Override
+    protected void setupUI() {
+
     }
 
-    private void createPost() {
-        App.api.createPost(getInformation()).enqueue(new Callback<Post>() {
+    private void createPost(Post post) {
+        App.api.createPost(post).enqueue(new Callback<Post>() {
             @Override
             public void onResponse(@NotNull Call<Post> call, @NotNull Response<Post> response) {
                 if (response.isSuccessful()) {
@@ -80,8 +67,8 @@ public class FormFragment extends Fragment {
         });
     }
 
-    private void updatePost() {
-        App.api.update(getInformation().getId(), getInformation()).enqueue(new Callback<Post>() {
+    private void updatePost(Post post) {
+        App.api.update(post.getId(), post).enqueue(new Callback<Post>() {
             @Override
             public void onResponse(@NotNull Call<Post> call, @NotNull Response<Post> response) {
                 if (response.isSuccessful()) {

@@ -1,8 +1,10 @@
-package kg.geektech.mokerapi;
+package kg.geektech.mokerapi.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import kg.geektech.mokerapi.R;
 
 public class MainActivity extends AppCompatActivity {
 

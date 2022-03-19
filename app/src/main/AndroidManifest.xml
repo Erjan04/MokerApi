@@ -14,7 +14,7 @@
         android:theme="@style/Theme.MokerApi">
         <activity
             android:exported="true"
-            android:name=".MainActivity">
+            android:name=".ui.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

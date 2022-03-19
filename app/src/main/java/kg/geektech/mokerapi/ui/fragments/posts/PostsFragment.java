@@ -1,4 +1,4 @@
-package kg.geektech.mokerapi.ui.posts;
+package kg.geektech.mokerapi.ui.fragments.posts;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
